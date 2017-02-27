@@ -18,6 +18,11 @@ import Text.Hamlet (shamlet)
 import Servant.HTML.Blaze 
 import Text.Blaze.Html5 hiding (main)
 import Network.Wai.Middleware.Cors
+import Text.Lucius (CssUrl, luciusFile, luciusFileReload, renderCss, renderCssUrl)
+import qualified Data.Text.Lazy.IO as TLIO
+
+
+
 
 data User = User
   { userId        :: Int
@@ -27,18 +32,33 @@ data User = User
 
 $(deriveJSON defaultOptions ''User)
 
-data LoginPage = LoginPage
+
+
+template = $(luciusFile "template.lucius") 
+{-
+cssStyle :: Html 
+cssStyle = toHtml $ renderCssUrl undefined 
+    template
+-}
+
+cssStyle = toHtml $ renderCss $ template undefined
+
+
+data LoginPage = LoginPage 
 
 instance ToMarkup LoginPage where
-      toMarkup LoginPage = builderHtml
+      toMarkup LoginPage = builderHtml       
 
 builderHtml = [shamlet|
                 $doctype 5
                 <html>
                     <head>
-                        <title>Greeting2
-                <body>
-                    <h2> Hello world HTML Qqqqq |]
+                        <title>Greeting2 #{userFirstName person}
+                        <style>#{cssStyle}
+                    <body>
+                        <h2> Hello world HTML #{userFirstName person} #{userLastName person} |] 
+                                                 where
+                                                    person = albert
 
 
 
@@ -76,5 +96,4 @@ albert = User 2 "Albert" "Einstein"
 
 users :: [User]
 users = [ isaac, albert]
-
 
