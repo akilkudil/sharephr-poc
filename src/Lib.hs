@@ -14,13 +14,12 @@ import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
 import Network.Wai.Middleware.Jsonp
-import Text.Hamlet (shamlet)
+import Text.Hamlet 
 import Servant.HTML.Blaze 
 import Text.Blaze.Html5 hiding (main)
 import Network.Wai.Middleware.Cors
 import Text.Lucius (CssUrl, luciusFile, luciusFileReload, renderCss, renderCssUrl)
-import qualified Data.Text.Lazy.IO as TLIO
-
+import Text.Blaze.Html.Renderer.String (renderHtml)
 
 
 
@@ -34,21 +33,33 @@ $(deriveJSON defaultOptions ''User)
 
 
 
-template = $(luciusFile "template.lucius") 
+cssTemplate = 
+          $(luciusFile "template.lucius") 
 {-
 cssStyle :: Html 
 cssStyle = toHtml $ renderCssUrl undefined 
-    template
+    cssTemplate
 -}
 
-cssStyle = toHtml $ renderCss $ template undefined
+cssStyle = 
+     toHtml $ renderCss $ cssTemplate undefined
 
 
-data LoginPage = LoginPage 
+renderHamlet person = 
+           $(shamletFile "template.hamlet")
+
+data LoginPage = 
+             LoginPage
+
+builderHtml =
+        toHtml $ renderHamlet albert
+
+
+ 
 
 instance ToMarkup LoginPage where
       toMarkup LoginPage = builderHtml       
-
+{-
 builderHtml = [shamlet|
                 $doctype 5
                 <html>
@@ -59,6 +70,7 @@ builderHtml = [shamlet|
                         <h2> Hello world HTML #{userFirstName person} #{userLastName person} |] 
                                                  where
                                                     person = albert
+-}
 
 
 
