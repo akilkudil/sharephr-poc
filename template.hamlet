@@ -1,0 +1,7 @@
+$doctype 5
+   <html>
+       <head>
+           <title>Greeting2 #{userFirstName person}
+           <style>#{cssStyle}
+       <body>
+           <h2> Hello world HTML #{userFirstName person} #{userLastName person}

@@ -19,7 +19,6 @@ import Servant.HTML.Blaze
 import Text.Blaze.Html5 hiding (main)
 import Network.Wai.Middleware.Cors
 import Text.Lucius (CssUrl, luciusFile, luciusFileReload, renderCss, renderCssUrl)
-import Text.Blaze.Html.Renderer.String (renderHtml)
 
 
 
